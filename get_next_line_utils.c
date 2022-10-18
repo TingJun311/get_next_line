@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ctingjun <ctingjun@student.42.kl>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/17 12:20:59 by ctingjun          #+#    #+#             */
-/*   Updated: 2022/10/17 22:19:50 by ctingjun         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
 int	ft_check_new_line(const char *s, char c)
@@ -58,6 +46,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	while (s2[k])
 		ptr[i++] = s2[k++];
 	ptr[i] = '\0';
+	//free((char *)s1);
 	return (ptr);	
 }
 
@@ -66,11 +55,14 @@ size_t	ft_strtrim_front(char *buffer, char *temp)
 {
 	size_t	i;
 
-	i = 0;
 	if (buffer == NULL || temp == NULL)
 		return (0);
 	i = 0;
-	while (buffer[i] && buffer[i] == temp[i] && temp[i] != '\n')
+	if (buffer[i] == '\n')
 		i++;
-	return (i);
+	buffer += i;
+	i = 0;
+	while (buffer[i] && buffer[i] == temp[i] && buffer[i] != '\n')
+		i++;
+	return (i + 1);
 }
