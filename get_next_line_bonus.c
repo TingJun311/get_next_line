@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctingjun <ctingjun@student.42.kl>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/19 17:07:01 by ctingjun          #+#    #+#             */
-/*   Updated: 2022/10/21 16:34:43 by ctingjun         ###   ########.fr       */
+/*   Created: 2022/10/21 16:57:06 by ctingjun          #+#    #+#             */
+/*   Updated: 2022/10/21 19:46:51 by ctingjun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,47 +105,47 @@ char	*ft_strim_front(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[8192];
 	char		*temp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	buffer = ft_get_line(fd, buffer);
-	if (!buffer[0])
+	buffer[fd] = ft_get_line(fd, buffer[fd]);
+	if (!buffer[fd][0])
 	{
-		free(buffer);
-		buffer = NULL;
+		free(buffer[fd]);
+		buffer[fd] = NULL;
 		return (NULL);
 	}
-	temp = ft_retriv_line(buffer);
+	temp = ft_retriv_line(buffer[fd]);
 	if (!temp[0])
 	{
 		free(temp);
 		return (NULL);
 	}
-	buffer = ft_strim_front(buffer);
+	buffer[fd] = ft_strim_front(buffer[fd]);
 	return (temp);
 }
 
 //int	main(int ac, char **av)
 //{
 //	int fd;
+//	int	fd1;
+//	int	fd2;
 //	(void)ac;
 //	(void)av;
 //
 //	if (ac > 1)
 //	{
 //		fd = open(av[1], O_RDONLY);
+//		fd1 = open(av[2], O_RDONLY);
+//		fd2 = open(av[3], O_RDONLY);
 //		printf("1st call: %s", get_next_line(fd));
+//		printf("2st call: %s", get_next_line(fd1));
 //		printf("2st call: %s", get_next_line(fd));
-//		printf("3st call: %s", get_next_line(fd));
-//		printf("4st call: %s", get_next_line(fd));
-//		printf("5st call: %s", get_next_line(fd));
-//		printf("6st call: %s", get_next_line(fd));
-//		printf("7st call: %s", get_next_line(fd));
-//		printf("8st call: %s", get_next_line(fd));
-//		printf("9st call: %s", get_next_line(fd));
-//		printf("10st call: %s", get_next_line(fd));
+//		printf("2st call: %s", get_next_line(fd1));
+//		printf("2st call: %s", get_next_line(fd));
+//		printf("3st call: %s", get_next_line(fd1));
 //		close(fd);
 //	}
 //	else
