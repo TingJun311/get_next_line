@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char *str)
 {
@@ -46,7 +46,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (res);
 }
 
-int	ft_check_line(const char *str)
+int	detect_line(const char *str)
 {
 	size_t	i;
 
@@ -62,7 +62,7 @@ int	ft_check_line(const char *str)
 	return (0);
 }
 
-char	*ft_calloc(void)
+char	*init_cache(void)
 {
 	char	*buffer;
 
@@ -71,7 +71,7 @@ char	*ft_calloc(void)
 	return (buffer);
 }
 
-void	ft_clean(char *str)
+void	replace_null(char *str)
 {
 	size_t	i;
 

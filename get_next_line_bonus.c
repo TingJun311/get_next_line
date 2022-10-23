@@ -10,21 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-char	*ft_join_free(char *buffer, char *temp)
+char	*ft_join_free(char *cache, char *temp)
 {
-	char	*new_buffer;
+	char	*new_cache;
 
-	if (buffer == NULL)
+	if (cache == NULL)
 		return (NULL);
-	new_buffer = ft_strjoin(buffer, temp);
-	free(buffer);
-	buffer = NULL;
-	return (new_buffer);
+	new_cache = ft_strjoin(cache, temp);
+	free(cache);
+	cache = NULL;
+	return (new_cache);
 }
 
-char	*ft_get_line(int fd, char *buffer)
+char	*scan_file(int fd, char *cache)
 {
 	char	*temp;
 	int		read_char;
@@ -32,12 +32,12 @@ char	*ft_get_line(int fd, char *buffer)
 	temp = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (temp == NULL)
 		return (NULL);
-	if (buffer == NULL)
-		buffer = ft_calloc();
+	if (cache == NULL)
+		cache = init_cache();
 	read_char = 1;
 	while (read_char > 0)
 	{
-		ft_clean(temp);
+		replace_null(temp);
 		read_char = read(fd, temp, BUFFER_SIZE);
 		if (read_char == -1)
 		{
@@ -45,15 +45,15 @@ char	*ft_get_line(int fd, char *buffer)
 			return (NULL);
 		}
 		temp[BUFFER_SIZE] = '\0';
-		buffer = ft_join_free(buffer, temp);
-		if (ft_check_line(temp))
+		cache = ft_join_free(cache, temp);
+		if (detect_line(temp))
 			break ;
 	}
 	free(temp);
-	return (buffer);
+	return (cache);
 }
 
-char	*ft_retriv_line(char *str)
+char	*retrieve_line(char *str)
 {
 	char	*ptr;
 	size_t	i;
@@ -78,9 +78,9 @@ char	*ft_retriv_line(char *str)
 	return (ptr);
 }
 
-char	*ft_strim_front(char *str)
+char	*trim_front(char *str)
 {
-	char	*new_buffer;
+	char	*new_cache;
 	size_t	i;
 	size_t	k;
 
@@ -93,37 +93,37 @@ char	*ft_strim_front(char *str)
 		if (str[i - 1] == '\n')
 			break ;
 	}
-	new_buffer = (char *)malloc(sizeof(char) * ((ft_strlen(str) - i) + 1));
+	new_cache = (char *)malloc(sizeof(char) * ((ft_strlen(str) - i) + 1));
 	k = 0;
 	while (str[i])
-		new_buffer[k++] = str[i++];
-	new_buffer[k] = '\0';
+		new_cache[k++] = str[i++];
+	new_cache[k] = '\0';
 	free(str);
 	str = NULL;
-	return (new_buffer);
+	return (new_cache);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer[8192];
+	static char	*cache[8192];
 	char		*temp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	buffer[fd] = ft_get_line(fd, buffer[fd]);
-	if (!buffer[fd][0])
+	cache[fd] = scan_file(fd, cache[fd]);
+	if (!cache[fd][0])
 	{
-		free(buffer[fd]);
-		buffer[fd] = NULL;
+		free(cache[fd]);
+		cache[fd] = NULL;
 		return (NULL);
 	}
-	temp = ft_retriv_line(buffer[fd]);
+	temp = retrieve_line(cache[fd]);
 	if (!temp[0])
 	{
 		free(temp);
 		return (NULL);
 	}
-	buffer[fd] = ft_strim_front(buffer[fd]);
+	cache[fd] = trim_front(cache[fd]);
 	return (temp);
 }
 

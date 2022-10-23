@@ -26,10 +26,10 @@ size_t	ft_strlen(char *str);
 
 char	*ft_strjoin(char *s1, char *s2);
 
-int		ft_check_line(const char *str);
+int	detect_line(const char *str);
 
-char	*ft_calloc(void);
+char	*init_cache(void);
 
-void	ft_clean(char *str);
+void	replace_null(char *str);
 
 #endif
