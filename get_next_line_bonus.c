@@ -12,7 +12,7 @@
 
 #include "get_next_line_bonus.h"
 
-char	*ft_join_free(char *cache, char *temp)
+static char	*ft_join_free(char *cache, char *temp)
 {
 	char	*new_cache;
 
@@ -24,7 +24,7 @@ char	*ft_join_free(char *cache, char *temp)
 	return (new_cache);
 }
 
-char	*scan_file(int fd, char *cache)
+static char	*scan_file(int fd, char *cache)
 {
 	char	*temp;
 	int		read_char;
@@ -53,7 +53,7 @@ char	*scan_file(int fd, char *cache)
 	return (cache);
 }
 
-char	*retrieve_line(char *str)
+static char	*retrieve_line(char *str)
 {
 	char	*ptr;
 	size_t	i;
@@ -78,7 +78,7 @@ char	*retrieve_line(char *str)
 	return (ptr);
 }
 
-char	*trim_front(char *str)
+static char	*trim_front(char *str)
 {
 	char	*new_cache;
 	size_t	i;
