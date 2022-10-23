@@ -126,29 +126,3 @@ char	*get_next_line(int fd)
 	cache[fd] = trim_front(cache[fd]);
 	return (temp);
 }
-
-//int	main(int ac, char **av)
-//{
-//	int fd;
-//	int	fd1;
-//	int	fd2;
-//	(void)ac;
-//	(void)av;
-//
-//	if (ac > 1)
-//	{
-//		fd = open(av[1], O_RDONLY);
-//		fd1 = open(av[2], O_RDONLY);
-//		fd2 = open(av[3], O_RDONLY);
-//		printf("1st call: %s", get_next_line(fd));
-//		printf("2st call: %s", get_next_line(fd1));
-//		printf("2st call: %s", get_next_line(fd));
-//		printf("2st call: %s", get_next_line(fd1));
-//		printf("2st call: %s", get_next_line(fd));
-//		printf("3st call: %s", get_next_line(fd1));
-//		close(fd);
-//	}
-//	else
-//		write(1, "Empty", 5);
-//	return (0);
-//}
