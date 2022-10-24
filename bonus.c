@@ -2,7 +2,7 @@
 #define GRN   "\x1B[32m"
 #define RESET "\x1B[0m"
 
-static void	display(int call, char *str, int file)
+static void display (int call, char *str, int file)
 {
 	printf(GRN);
 	printf("(%dst call)", call);
@@ -14,59 +14,42 @@ static void	display(int call, char *str, int file)
 	printf(": %s\n", str);
 }
 
-static int read_different_files(int fd, int fd2, int fd3, int call)
+static int read_files(int files[], int  q_file, int  call)
 {
+	static int 	finished;
 	char		*res;
-	static int	finished;
-	int		file;
-
-	file = 1;
+	
 	finished = 0;
-	res = get_next_line(fd);
-	if (res)
+	for (int i = 0; i < q_file; i++)
 	{
-		display(call, res, file);
-		free(res);
+		res = get_next_line(files[i]);
+		display(call, res, i + 1);
+		if (res)
+			free(res);
+		else
+			finished++;
 	}
-	else
-		finished++;
-	file++;
-	res = get_next_line(fd2);
-	if (res)
-	{
-		display(call, res, file);
-		free(res);
-	}
-	else
-		finished++;
-	file++;
-	res = get_next_line(fd3);
-	if (res)
-	{
-		display(call, res, file);	
-		free(res);
-	}
-	else
-		finished++;
 	return (finished);
 }
 
 int	main(int ac, char **av)
 {
-	int 	fd[4];
-	int	call;
-	int	f_call;
+	int 	fd[8192], call, f_call, files;
 	
-	if (ac == 4)
+	if (ac > 1)
 	{
-		call = 1;
+		files = 0;
+		while (av[files + 1])
+			files++;
+		printf("%d\n", files);
+		call = 0;
 		f_call = 1;
-		for(int i = 0; i < 3; i++)
+		for(int i = 0; i < files; i++)
 			fd[i] = open(av[i + 1], O_RDONLY);
-		while (call != 3)
-			call = read_different_files(fd[0], fd[1], fd[2], f_call++);
+		while (call != files)
+			call = read_files(fd, files, f_call++);
 		write(1, "OK!\n", 4);
-		for(int i = 0; i < 3; i++)
+		for(int i = 0; i < files; i++)
 			close(fd[i]);
 	}
 	else
