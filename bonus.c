@@ -35,13 +35,12 @@ static int read_files(int files[], int  q_file, int  call)
 int	main(int ac, char **av)
 {
 	int 	fd[8192], call, f_call, files;
-	
+
 	if (ac > 1)
 	{
 		files = 0;
 		while (av[files + 1])
 			files++;
-		printf("%d\n", files);
 		call = 0;
 		f_call = 1;
 		for(int i = 0; i < files; i++)
@@ -53,7 +52,6 @@ int	main(int ac, char **av)
 			close(fd[i]);
 	}
 	else
-		write(1, "Must have 3 files to run the program\n", 37);
-
+		write(1, "Must have 1 or more files to run the program\n", 45);
 	return (0);
 }
